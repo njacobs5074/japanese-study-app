@@ -24,7 +24,15 @@ export default function AboutPage() {
             <a href="https://tatoeba.org/">Tatoeba</a>. Each sentence is shown with its contributor
             and licence (CC BY 2.0 FR or CC0 1.0), and links back to the sentence on tatoeba.org.
           </p>
-          {todo('describe how searches are made once the Tatoeba client exists (milestone 3).')}
+          <p>
+            For each word, one search is sent to the Tatoeba API for Japanese sentences containing
+            that exact word, with English translations, in random order (up to 10 results). Only
+            sentences without a licensing problem are returned. Results are saved in your browser
+            and are not requested again for the same word. A sentence’s reading is Tatoeba’s own
+            kana transcription where it has one, and may contain mistakes. Sentences can be
+            licensed under CC BY 2.0 FR or CC0 1.0; each translation is credited with its own
+            contributor and licence.
+          </p>
         </section>
 
         <section>

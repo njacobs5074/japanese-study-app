@@ -322,3 +322,50 @@ textarea {
 .kanji-facts dd {
   margin: 0;
 }
+
+/* Sentences */
+.drill-title {
+  font-size: 1.2rem;
+}
+
+.sentence {
+  font-size: 1.6rem;
+  line-height: 1.8;
+  margin: 1rem 0 0.25rem;
+}
+
+.target-word {
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+
+.attribution {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.reveal {
+  margin-bottom: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.sentence-reading {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.translation {
+  font-size: 1.1rem;
+  margin: 0 0 0.25rem;
+}
+
+.position {
+  margin-left: auto;
+  align-self: center;
+}
