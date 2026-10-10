@@ -374,7 +374,7 @@ textarea {
 /* Text */
 .passage p {
   font-size: 1.4rem;
-  line-height: 2.4;
+  line-height: 1.7;
   margin: 0 0 0.5rem;
 }
 
@@ -385,7 +385,8 @@ textarea {
   border: 1px solid var(--hairline);
   border-radius: 8px;
   padding: 0.1rem 0.35rem;
-  margin: 0 0.1rem;
+  margin: 1px 0.1rem;
+  line-height: 1.4; /* `font: inherit` would otherwise make each button as tall as a full line */
   cursor: pointer;
 }
 
