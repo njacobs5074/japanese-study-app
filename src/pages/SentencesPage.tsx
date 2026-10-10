@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Attribution from '../components/Attribution';
 import Card from '../components/Card';
-import { fixtureDictionary, fixtureWords } from '../data/fixtures';
+import { useStudy } from '../state/StudyContext';
 import { getSentences } from '../lib/sentenceService';
 import { splitOnWord, type Sentence } from '../lib/tatoeba';
 
@@ -13,13 +13,20 @@ type State =
 
 export default function SentencesPage() {
   const { word } = useParams();
+  const { studyList } = useStudy();
 
   if (!word) {
     return (
       <Card title="Sentences">
-        <p>Pick a word to drill:</p>
+        {studyList.length === 0 ? (
+          <p>
+            Your study list is empty. <Link to="/text">Add words from your text</Link> first.
+          </p>
+        ) : (
+          <p>Pick a word to drill:</p>
+        )}
         <ul className="word-list">
-          {fixtureWords.map((e) => (
+          {studyList.map((e) => (
             <li key={e.word}>
               <Link to={`/sentences/${encodeURIComponent(e.word)}`} lang="ja">
                 {e.word}
@@ -39,7 +46,8 @@ function Drill({ word }: { word: string }) {
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [attempt, setAttempt] = useState(0);
-  const entry = fixtureDictionary.lookup(word);
+  const { studyList } = useStudy();
+  const entry = studyList.find((i) => i.word === word);
 
   const load = useCallback(() => {
     const controller = new AbortController();

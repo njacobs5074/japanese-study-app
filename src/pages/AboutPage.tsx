@@ -47,8 +47,23 @@ export default function AboutPage() {
         </section>
 
         <section>
+          <h2>Splitting text into words</h2>
+          <p>
+            Passages are split into words in your browser by{' '}
+            <a href="https://github.com/patdx/kuromoji.js">@patdx/kuromoji</a>, a fork of{' '}
+            <a href="https://github.com/takuyaa/kuromoji.js">kuromoji.js</a> (Apache License 2.0),
+            using its bundled IPADIC dictionary. The dictionary is downloaded the first time you
+            split a text.
+          </p>
+          {todo('add the exact IPADIC copyright and licence notice (ICOT / NAIST) after verifying its wording.')}
+        </section>
+
+        <section>
           <h2>Your own text</h2>
-          {todo('confirm storage once decided. Planned: the text you paste stays in this browser (IndexedDB) and is never sent anywhere.')}
+          <p>
+            The passage you paste, its title, your study list and your review progress are stored
+            only in this browser (IndexedDB). Nothing you write is sent to a server.
+          </p>
         </section>
       </div>
     </Card>

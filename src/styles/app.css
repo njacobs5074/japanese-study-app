@@ -370,3 +370,68 @@ textarea {
   margin-left: auto;
   align-self: center;
 }
+
+/* Text */
+.field-label {
+  display: block;
+  margin-top: 1rem;
+}
+
+.text-input {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-button);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.1rem;
+}
+
+.passage p {
+  font-size: 1.4rem;
+  line-height: 2.4;
+  margin: 0 0 0.5rem;
+}
+
+.word-button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 0.1rem 0.35rem;
+  margin: 0 0.1rem;
+  cursor: pointer;
+}
+
+.word-button[aria-pressed='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.quiet {
+  color: var(--muted);
+  padding: 0 0.1rem;
+}
+
+.icon-button {
+  margin-left: auto;
+  min-width: 32px;
+  min-height: 32px;
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.study-gloss {
+  font-size: 0.9rem;
+}

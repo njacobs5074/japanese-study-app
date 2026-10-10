@@ -4,7 +4,8 @@ import Card from '../components/Card';
 import JlptBadge from '../components/JlptBadge';
 import KanjiDiagram from '../components/KanjiDiagram';
 import TwoColumn from '../components/TwoColumn';
-import { fixtureDictionary, fixtureJlptLevels, fixtureWords } from '../data/fixtures';
+import { fixtureJlptLevels } from '../data/fixtures';
+import { useStudy } from '../state/StudyContext';
 import { getAllReviews, putReview } from '../lib/db';
 import { kanjiChars } from '../lib/kanjivg';
 import { buildQueue } from '../lib/queue';
@@ -20,7 +21,8 @@ const GRADES: { grade: Grade; label: string }[] = [
 const STATUS_LABEL = { now: 'Now', next: 'Next', queued: 'Queued' } as const;
 
 export default function CardsPage() {
-  const words = useMemo(() => fixtureWords.map((e) => e.word), []);
+  const { studyList, loaded } = useStudy();
+  const words = useMemo(() => studyList.map((i) => i.word), [studyList]);
   const [reviews, setReviews] = useState<Map<string, ReviewRecord> | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [revealed, setRevealed] = useState(false);
@@ -33,11 +35,22 @@ export default function CardsPage() {
     });
   }, []);
 
-  if (!reviews) return <Card>Loading…</Card>;
+  if (!reviews || !loaded) return <Card>Loading…</Card>;
+
+  if (studyList.length === 0) {
+    return (
+      <Card title="No words yet">
+        <p>
+          Your study list is empty. <Link to="/text">Add words from your text</Link> to study them as
+          cards.
+        </p>
+      </Card>
+    );
+  }
 
   const queue = buildQueue(words, reviews, now);
   const current = queue.find((i) => i.status === 'now');
-  const entry = current && fixtureDictionary.lookup(current.word);
+  const entry = current && studyList.find((i) => i.word === current.word);
   const nextDue = queue.length ? Math.min(...queue.map((i) => i.dueAt)) : undefined;
 
   async function grade(g: Grade) {
@@ -83,7 +96,9 @@ export default function CardsPage() {
                   <p className="reading" lang="ja">
                     {entry.kana}
                   </p>
-                  <p className="meaning">{entry.gloss}</p>
+                  <p className="meaning">
+                    {entry.gloss ?? <span className="muted">No definition yet — the dictionary is coming in a later milestone.</span>}
+                  </p>
                   <div className="kanji-grid">
                     {kanjiChars(current.word).map((c) => (
                       <KanjiDiagram key={c} char={c} />

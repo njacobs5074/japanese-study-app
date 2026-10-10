@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { fixtureText, fixtureWords } from '../data/fixtures';
+import { useStudy } from '../state/StudyContext';
 
 const iconProps = {
   width: 22,
@@ -34,6 +34,7 @@ function currentTheme(): Theme {
 }
 
 export default function Layout() {
+  const { text } = useStudy();
   const [theme, setTheme] = useState<Theme>(currentTheme);
   const toggleTheme = () => {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';
@@ -60,12 +61,10 @@ export default function Layout() {
           <nav aria-label="Main">
             <NavLink to="/text">Text</NavLink>
             <NavLink to="/cards">Cards</NavLink>
-            <NavLink to={`/sentences/${encodeURIComponent(fixtureWords[0].word)}`}>
-              Sentences
-            </NavLink>
+            <NavLink to="/sentences">Sentences</NavLink>
           </nav>
           <p className="studying">
-            Studying: <span lang="ja">{fixtureText.title}</span>
+            Studying: {text?.title ? <span lang="ja">{text.title}</span> : 'no text yet'}
           </p>
         </div>
       </header>
