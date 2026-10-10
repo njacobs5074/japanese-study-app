@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { createDictionary, pickEntry, shortGloss, type JmdictData, type KanjidicData } from './jmdict';
-import { fixtureJlptLevels } from './fixtures';
 
 const jmdict: JmdictData = {
   entries: {
@@ -55,12 +54,5 @@ describe('dictionary', () => {
       meaning: 'meeting, meet, party',
     });
     expect(await dict.kanjiInfo('猫')).toBeUndefined();
-  });
-});
-
-describe('fixture JLPT levels', () => {
-  it('are only defined for the fixture kanji', () => {
-    expect(fixtureJlptLevels.forKanji('会')).toBe('N4');
-    expect(fixtureJlptLevels.forKanji('猫')).toBeUndefined();
   });
 });

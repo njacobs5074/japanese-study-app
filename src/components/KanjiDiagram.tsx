@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fixtureJlptLevels } from '../data/fixtures';
+import { jlptLevels } from '../data/jlpt';
 import { dictionary } from '../data/jmdict';
 import type { KanjiInfo } from '../data/types';
 import { loadKanji } from '../lib/kanjiLoader';
@@ -35,7 +35,7 @@ export default function KanjiDiagram({ char }: { char: string }) {
     };
   }, [char]);
 
-  const level = fixtureJlptLevels.forKanji(char);
+  const level = jlptLevels.forKanji(char);
   const strokeCount = state.status === 'ready' ? state.kanji.paths.length : undefined;
 
   return (

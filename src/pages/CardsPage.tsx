@@ -4,7 +4,7 @@ import Card from '../components/Card';
 import JlptBadge from '../components/JlptBadge';
 import KanjiDiagram from '../components/KanjiDiagram';
 import TwoColumn from '../components/TwoColumn';
-import { fixtureJlptLevels } from '../data/fixtures';
+import { jlptLevels } from '../data/jlpt';
 import { useStudy } from '../state/StudyContext';
 import { getAllReviews, putReview } from '../lib/db';
 import { kanjiChars } from '../lib/kanjivg';
@@ -51,6 +51,12 @@ export default function CardsPage() {
   const queue = buildQueue(words, reviews, now);
   const current = queue.find((i) => i.status === 'now');
   const entry = current && studyList.find((i) => i.word === current.word);
+  const badges = current
+    ? kanjiChars(current.word).flatMap((c) => {
+        const level = jlptLevels.forKanji(c);
+        return level ? [[c, level] as const] : [];
+      })
+    : [];
   const nextDue = queue.length ? Math.min(...queue.map((i) => i.dueAt)) : undefined;
 
   async function grade(g: Grade) {
@@ -81,12 +87,15 @@ export default function CardsPage() {
               <p className="word-front" lang="ja">
                 {current.word}
               </p>
-              <p className="badge-row">
-                {kanjiChars(current.word).map((c) => {
-                  const level = fixtureJlptLevels.forKanji(c);
-                  return level && <span key={c}><span lang="ja">{c}</span> <JlptBadge level={level} /></span>;
-                })}
-              </p>
+              {badges.length > 0 && (
+                <p className="badge-row">
+                  {badges.map(([c, level]) => (
+                    <span key={c}>
+                      <span lang="ja">{c}</span> <JlptBadge level={level} />
+                    </span>
+                  ))}
+                </p>
+              )}
               {!revealed ? (
                 <button type="button" className="button button--primary" onClick={() => setRevealed(true)}>
                   Show reading and meaning
