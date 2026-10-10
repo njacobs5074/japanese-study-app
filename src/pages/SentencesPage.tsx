@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Attribution from '../components/Attribution';
 import Card from '../components/Card';
+import { shortGloss } from '../data/jmdict';
 import { useStudy } from '../state/StudyContext';
 import { getSentences } from '../lib/sentenceService';
 import { splitOnWord, type Sentence } from '../lib/tatoeba';
@@ -31,7 +32,7 @@ export default function SentencesPage() {
               <Link to={`/sentences/${encodeURIComponent(e.word)}`} lang="ja">
                 {e.word}
               </Link>
-              <span className="muted">{e.gloss}</span>
+              <span className="muted">{e.gloss ? shortGloss(e.gloss) : ''}</span>
             </li>
           ))}
         </ul>
@@ -71,7 +72,7 @@ function Drill({ word }: { word: string }) {
     <Card>
       <h1 className="drill-title">
         Sentences for <span lang="ja">{word}</span>
-        {entry && <span className="muted"> — {entry.gloss}</span>}
+        {entry?.gloss && <span className="muted"> — {shortGloss(entry.gloss)}</span>}
       </h1>
 
       {state.status === 'loading' && <p className="muted">Loading sentences from Tatoeba…</p>}

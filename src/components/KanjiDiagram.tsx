@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { fixtureDictionary, fixtureJlptLevels } from '../data/fixtures';
+import { fixtureJlptLevels } from '../data/fixtures';
+import { dictionary } from '../data/jmdict';
+import type { KanjiInfo } from '../data/types';
 import { loadKanji } from '../lib/kanjiLoader';
 import type { KanjiStrokes } from '../lib/kanjivg';
 import JlptBadge from './JlptBadge';
@@ -8,6 +10,18 @@ type State = { status: 'loading' } | { status: 'error' } | { status: 'ready'; ka
 
 export default function KanjiDiagram({ char }: { char: string }) {
   const [state, setState] = useState<State>({ status: 'loading' });
+  const [info, setInfo] = useState<KanjiInfo | undefined>();
+
+  useEffect(() => {
+    let cancelled = false;
+    dictionary.kanjiInfo(char).then(
+      (i) => !cancelled && setInfo(i),
+      () => undefined,
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [char]);
 
   useEffect(() => {
     let cancelled = false;
@@ -21,7 +35,6 @@ export default function KanjiDiagram({ char }: { char: string }) {
     };
   }, [char]);
 
-  const info = fixtureDictionary.kanjiInfo(char);
   const level = fixtureJlptLevels.forKanji(char);
   const strokeCount = state.status === 'ready' ? state.kanji.paths.length : undefined;
 

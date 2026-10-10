@@ -21,7 +21,7 @@ const GRADES: { grade: Grade; label: string }[] = [
 const STATUS_LABEL = { now: 'Now', next: 'Next', queued: 'Queued' } as const;
 
 export default function CardsPage() {
-  const { studyList, loaded } = useStudy();
+  const { studyList, loaded, dictionaryError } = useStudy();
   const words = useMemo(() => studyList.map((i) => i.word), [studyList]);
   const [reviews, setReviews] = useState<Map<string, ReviewRecord> | null>(null);
   const [now, setNow] = useState(() => Date.now());
@@ -97,7 +97,15 @@ export default function CardsPage() {
                     {entry.kana}
                   </p>
                   <p className="meaning">
-                    {entry.gloss ?? <span className="muted">No definition yet — the dictionary is coming in a later milestone.</span>}
+                    {entry.gloss ?? (
+                      <span className="muted">
+                        {entry.lookedUp
+                          ? 'No definition found.'
+                          : dictionaryError
+                            ? 'Definition unavailable: the dictionary could not be loaded.'
+                            : 'Looking up definition…'}
+                      </span>
+                    )}
                   </p>
                   <div className="kanji-grid">
                     {kanjiChars(current.word).map((c) => (

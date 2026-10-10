@@ -19,6 +19,8 @@ export interface StudyItem {
   word: string;
   kana: string;
   gloss?: string;
+  /** True once the dictionary has been consulted (gloss stays undefined if nothing was found). */
+  lookedUp?: boolean;
   addedAt: number;
 }
 

@@ -1,4 +1,5 @@
 import type { IpadicFeatures, TokenizerBuilder } from '@patdx/kuromoji';
+import { fetchGunzipped } from './gzip';
 
 export type SegmentKind = 'word' | 'particle' | 'punct' | 'number' | 'other';
 
@@ -67,7 +68,6 @@ let tokenizerPromise: Promise<Tokenizer> | undefined;
 
 /**
  * Loads kuromoji and its dictionary (~17 MB, self-hosted) on first use only.
- * The files are gzip; the browser does not decompress them for us, so we do.
  */
 export function loadTokenizer(): Promise<Tokenizer> {
   tokenizerPromise ??= (async () => {
@@ -75,15 +75,7 @@ export function loadTokenizer(): Promise<Tokenizer> {
     const base = `${import.meta.env.BASE_URL}kuromoji-dict/`;
     const builder: TokenizerBuilder = new Builder({
       loader: {
-        async loadArrayBuffer(file: string) {
-          const res = await fetch(base + file);
-          if (!res.ok) throw new Error(`Failed to fetch ${file} (${res.status})`);
-          const bytes = new Uint8Array(await res.arrayBuffer());
-          const gzipped = bytes[0] === 0x1f && bytes[1] === 0x8b;
-          if (!gzipped) return bytes.buffer;
-          const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-          return new Response(stream).arrayBuffer();
-        },
+        loadArrayBuffer: (file: string) => fetchGunzipped(base + file),
       },
     });
     return builder.build();

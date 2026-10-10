@@ -3,3 +3,5 @@ dist
 *.local
 .DS_Store
 public/kuromoji-dict
+public/dict
+.cache

@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
+import { shortGloss } from '../data/jmdict';
 import { useStudy } from '../state/StudyContext';
 
 export default function StudyListPanel() {
-  const { studyList, removeWord } = useStudy();
+  const { studyList, removeWord, dictionaryError } = useStudy();
   const empty = studyList.length === 0;
 
   return (
@@ -18,7 +19,9 @@ export default function StudyListPanel() {
                 {item.word}
               </span>
               <span lang="ja">{item.kana !== item.word ? item.kana : ''}</span>
-              <span className="muted study-gloss">{item.gloss}</span>
+              <span className="muted study-gloss">
+                {item.gloss ? shortGloss(item.gloss) : item.lookedUp ? 'No definition found' : dictionaryError ? '' : 'Looking up…'}
+              </span>
               <button
                 type="button"
                 className="icon-button"
@@ -30,6 +33,11 @@ export default function StudyListPanel() {
             </li>
           ))}
         </ul>
+      )}
+      {dictionaryError && (
+        <p className="muted" role="alert">
+          Definitions are unavailable: the dictionary could not be loaded.
+        </p>
       )}
       <div className="button-row">
         {empty ? (

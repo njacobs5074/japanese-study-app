@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import TwoColumn from '../components/TwoColumn';
+import { preloadDictionary } from '../data/jmdict';
 import { loadTokenizer, segmentText } from '../lib/tokenizer';
 import { useStudy } from '../state/StudyContext';
 import StudyListPanel from './StudyListPanel';
@@ -23,6 +24,7 @@ export default function TextPage() {
 
   async function split() {
     setStatus('loading-dictionary');
+    preloadDictionary(); // fetch definitions in parallel so taps resolve quickly
     try {
       const tokenizer = await loadTokenizer();
       const lines = segmentText(tokenizer, body);
@@ -66,7 +68,7 @@ export default function TextPage() {
             </p>
             {status === 'loading-dictionary' && (
               <p className="muted" role="status">
-                Loading the Japanese dictionary (about 17 MB, first time only)…
+                Loading the word splitter (about 17 MB, first time only)…
               </p>
             )}
             {status === 'error' && (

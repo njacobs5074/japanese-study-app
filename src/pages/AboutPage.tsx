@@ -37,7 +37,19 @@ export default function AboutPage() {
 
         <section>
           <h2>Readings and definitions</h2>
-          {todo('source and licence, pending the dictionary decision (candidate: JMdict).')}
+          <p>
+            Word readings and definitions come from{' '}
+            <a href="https://www.edrdg.org/jmdict/j_jmdict.html">JMdict</a>, and kanji readings and
+            meanings from <a href="https://www.edrdg.org/wiki/index.php/KANJIDIC_Project">KANJIDIC2</a>.
+            Both are the property of the{' '}
+            <a href="https://www.edrdg.org/">Electronic Dictionary Research and Development Group</a>{' '}
+            (EDRDG) and are used under its{' '}
+            <a href="https://www.edrdg.org/edrdg/licence.html">licence</a> (Creative Commons
+            Attribution-ShareAlike 4.0). The data was converted to JSON by{' '}
+            <a href="https://github.com/scriptin/jmdict-simplified">jmdict-simplified</a> (release
+            3.6.2, dictionary date 2026-10-05) and shortened for use in this app: only the first
+            few senses and English glosses of each entry are kept.
+          </p>
         </section>
 
         <section>

@@ -2,6 +2,7 @@ export type JlptLevel = 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
 
 export interface DictionaryEntry {
   word: string;
+  /** Hiragana/katakana reading of the matched entry. */
   kana: string;
   gloss: string;
 }
@@ -12,10 +13,11 @@ export interface KanjiInfo {
   meaning: string;
 }
 
-/** Source of readings and definitions. Real implementation pending (open decision 1). */
+/** Source of readings and definitions (JMdict + KANJIDIC2). */
 export interface Dictionary {
-  lookup(word: string): DictionaryEntry | undefined;
-  kanjiInfo(char: string): KanjiInfo | undefined;
+  /** `reading` (kana) picks the right entry among homographs, e.g. 分 as ふん vs ぶん. */
+  lookup(word: string, reading?: string): Promise<DictionaryEntry | undefined>;
+  kanjiInfo(char: string): Promise<KanjiInfo | undefined>;
 }
 
 /** Source of JLPT levels per kanji. Real implementation pending (open decision 2). */
