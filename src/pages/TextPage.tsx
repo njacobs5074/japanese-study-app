@@ -42,7 +42,7 @@ export default function TextPage() {
     <TwoColumn
       main={
         <>
-          <Card title="Text">
+          <Card>
             {storageError && (
               <p className="placeholder" role="alert">
                 Your browser blocked local storage, so your text and study list won’t be kept.
