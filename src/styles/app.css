@@ -414,25 +414,21 @@ textarea {
   cursor: pointer;
 }
 
-.study-list {
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr) auto;
-  column-gap: 0.75rem;
-}
-
 .study-list li {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-column: 1 / -1;
-  align-items: start;
+  display: flex;
+  flex-wrap: wrap; /* a row whose word is too long stacks its kana/English below the word */
+  align-items: flex-start;
+  gap: 0.25rem 0.75rem;
 }
 
 .study-list .word {
+  min-width: 3.5em; /* roughly aligns the text column across short words */
+  overflow-wrap: anywhere;
   line-height: 1.3;
 }
 
 .study-text {
-  min-width: 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
 }
