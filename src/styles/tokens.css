@@ -1,0 +1,29 @@
+:root {
+  --ground: #eef1ee;
+  --surface: #ffffff;
+  --ink: #1b2438;
+  --muted: #55607a;
+  --hairline: #d5dad6;
+  --accent: #b8301c;
+  --accent-solid: #b8301c;
+  --on-accent: #ffffff;
+  color-scheme: light;
+
+  --radius-card: 16px;
+  --radius-button: 10px;
+  --button-min-height: 48px;
+
+  --font-display: 'Shippori Mincho', serif;
+  --font-body: 'Zen Kaku Gothic New', system-ui, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  --ground: #131826;
+  --surface: #1c2336;
+  --ink: #e8ecf4;
+  --muted: #a3adc4;
+  --hairline: #323b52;
+  --accent: #f0735e;
+  --accent-solid: #c23a24;
+  color-scheme: dark;
+}
