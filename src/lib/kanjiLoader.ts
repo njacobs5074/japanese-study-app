@@ -9,7 +9,6 @@ async function fetchSvg(url: string): Promise<string | undefined> {
     const res = await fetch(url);
     if (!res.ok) return undefined;
     const text = await res.text();
-    // A dev/static server may answer unknown paths with index.html and status 200.
     return text.includes('<svg') && text.includes('kvg:') ? text : undefined;
   } catch {
     return undefined;
@@ -22,10 +21,7 @@ async function load(char: string): Promise<KanjiStrokes> {
   const cached = await getCachedKanjiSvg(char).catch(() => undefined);
   if (cached) return parseKanjiSvg(char, cached);
 
-  // Vendored copies first; otherwise fetch once from KanjiVG and cache locally.
-  const vendored = await fetchSvg(`${import.meta.env.BASE_URL}kanjivg/${file}`);
-  if (vendored) return parseKanjiSvg(char, vendored);
-
+  // Not cached yet: fetch it once from KanjiVG and keep it in IndexedDB.
   const remote = await fetchSvg(GITHUB_RAW + file);
   if (!remote) throw new Error(`Stroke diagram for ${char} is unavailable`);
   const strokes = parseKanjiSvg(char, remote);

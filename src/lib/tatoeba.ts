@@ -1,35 +1,12 @@
-// Types mirror the schemas in https://api.tatoeba.org/openapi.json
-// (SentenceWithTranslations, Translation, Transcription, Paging).
+import type { components, paths } from './tatoeba-api';
 
-export type TatoebaLicense = 'CC BY 2.0 FR' | 'CC0 1.0' | 'PROBLEM';
-
-interface ApiTranscription {
-  script: string;
-  text: string;
-  type: 'transcription' | 'altscript';
-}
-
-interface ApiSentenceBase {
-  id: number;
-  text: string;
-  lang: string | null;
-  license: TatoebaLicense;
-  owner: string | null;
-}
-
-export interface ApiTranslation extends ApiSentenceBase {
-  is_direct: boolean;
-}
-
-export interface ApiSentence extends ApiSentenceBase {
-  translations?: ApiTranslation[];
-  transcriptions?: ApiTranscription[];
-}
-
-export interface ApiSentencesResponse {
-  data: ApiSentence[];
-  paging?: { total: number; has_next: boolean };
-}
+// API types are generated from https://api.tatoeba.org/openapi.json (npm run gen-tatoeba-types).
+// The spec marks every field optional, so the mapping below checks what it needs.
+export type ApiSentencesResponse = NonNullable<
+  paths['/v1/sentences']['get']['responses'][200]['content']
+>['application/json'];
+type ApiSentence = components['schemas']['SentenceWithTranslations'];
+type ApiTranslation = components['schemas']['Translation'];
 
 /** App-level shape: only what the UI needs, including attribution for every text. */
 export interface Attributed {
@@ -57,16 +34,23 @@ export function quoteQuery(word: string): string {
  * Builds the search URL. The `license` parameter is deliberately not sent: without it
  * the API already excludes sentences flagged with a licensing problem.
  */
+type SearchQuery = NonNullable<paths['/v1/sentences']['get']['parameters']['query']>;
+
 export function buildSearchUrl(word: string, limit = SENTENCE_LIMIT): string {
-  const params = new URLSearchParams({
-    lang: 'jpn',
+  // Typed against the spec, so a misspelled or wrongly typed parameter fails to compile.
+  const query: SearchQuery = {
+    lang: ['jpn'],
     q: quoteQuery(word),
     'trans:lang': 'eng',
     'showtrans:lang': 'eng',
-    include: 'transcriptions',
+    include: ['transcriptions'],
     sort: 'random',
-    limit: String(limit),
-  });
+    limit,
+  };
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(query)) {
+    params.set(key, Array.isArray(value) ? value.join(',') : String(value));
+  }
   return `${API_BASE}?${params}`;
 }
 
@@ -88,22 +72,24 @@ export function transcriptionToKana(markup: string): string {
   return markup.replace(/\[[^|\]]*\|([^\]]*)\]/g, (_, readings: string) => readings.replaceAll('|', ''));
 }
 
-function attributed(s: ApiSentenceBase): Attributed | undefined {
-  if (s.license === 'PROBLEM') return undefined;
-  return { id: s.id, text: s.text, owner: s.owner, license: s.license };
+/** Keeps what we need for display and attribution; drops anything incomplete or flagged. */
+function attributed(s: ApiSentence | ApiTranslation): Attributed | undefined {
+  if (s.id === undefined || s.text === undefined) return undefined;
+  if (s.license !== 'CC BY 2.0 FR' && s.license !== 'CC0 1.0') return undefined; // incl. PROBLEM
+  return { id: s.id, text: s.text, owner: s.owner ?? null, license: s.license };
 }
 
 export function mapSentences(response: ApiSentencesResponse): Sentence[] {
   const out: Sentence[] = [];
-  for (const raw of response.data) {
+  for (const raw of response.data ?? []) {
     const base = attributed(raw);
     if (!base) continue;
     const translations = raw.translations ?? [];
     const t = translations.find((x) => x.is_direct) ?? translations[0];
-    const kana = raw.transcriptions?.find((x) => x.script === 'Hrkt');
+    const kana = raw.transcriptions?.find((x) => x.script === 'Hrkt' && x.text);
     out.push({
       ...base,
-      reading: kana ? transcriptionToKana(kana.text) : undefined,
+      reading: kana?.text ? transcriptionToKana(kana.text) : undefined,
       translation: t ? attributed(t) : undefined,
     });
   }

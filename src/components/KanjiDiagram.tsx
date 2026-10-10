@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { jlptLevels } from '../data/jlpt';
 import { dictionary } from '../data/jmdict';
 import type { KanjiInfo } from '../data/types';
 import { loadKanji } from '../lib/kanjiLoader';
 import type { KanjiStrokes } from '../lib/kanjivg';
-import JlptBadge from './JlptBadge';
 
 type State = { status: 'loading' } | { status: 'error' } | { status: 'ready'; kanji: KanjiStrokes };
 
@@ -35,7 +33,6 @@ export default function KanjiDiagram({ char }: { char: string }) {
     };
   }, [char]);
 
-  const level = jlptLevels.forKanji(char);
   const strokeCount = state.status === 'ready' ? state.kanji.paths.length : undefined;
 
   return (
@@ -69,7 +66,6 @@ export default function KanjiDiagram({ char }: { char: string }) {
         <span lang="ja" className="kanji-char">
           {char}
         </span>{' '}
-        {level && <JlptBadge level={level} />}
         <dl className="kanji-facts">
           {info && (
             <>

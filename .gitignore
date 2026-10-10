@@ -5,3 +5,4 @@ dist
 public/kuromoji-dict
 public/dict
 .cache
+*.tsbuildinfo

@@ -21,4 +21,7 @@ npm test         # unit tests
   Downloads are cached in `.cache/dict/`; pass `-- --force` to rebuild. This needs network
   access and the `tar` command the first time.
 
-Both outputs are git-ignored. Data credits and licences are on the app's About page.
+`npm run gen-tatoeba-types` regenerates `src/lib/tatoeba-api.d.ts` (the Tatoeba API types) from
+the live OpenAPI spec; that file is committed.
+
+The dictionary outputs are git-ignored. Data credits and licences are on the app's About page.

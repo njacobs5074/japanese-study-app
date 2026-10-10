@@ -53,12 +53,6 @@ export default function AboutPage() {
         </section>
 
         <section>
-          <h2>JLPT levels</h2>
-          <p>JLPT levels shown in this app are unofficial; there are no official kanji lists for the current test.</p>
-          {todo('source and licence, pending the JLPT data decision.')}
-        </section>
-
-        <section>
           <h2>Splitting text into words</h2>
           <p>
             Passages are split into words in your browser by{' '}
@@ -73,7 +67,7 @@ export default function AboutPage() {
         <section>
           <h2>Your own text</h2>
           <p>
-            The passage you paste, its title, your study list and your review progress are stored
+            The passage you paste, your study list and your review progress are stored
             only in this browser (IndexedDB). Nothing you write is sent to a server.
           </p>
         </section>
