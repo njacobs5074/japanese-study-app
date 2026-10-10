@@ -25,3 +25,13 @@ npm test         # unit tests
 the live OpenAPI spec; that file is committed.
 
 The dictionary outputs are git-ignored. Data credits and licences are on the app's About page.
+
+## Content-Security-Policy
+
+Production builds include a Content-Security-Policy `<meta>` tag (defined in `vite.config.ts`;
+the dev server has none because hot reload needs inline scripts). It allows only this app's own
+files, Tatoeba (`api.tatoeba.org`) and KanjiVG (`raw.githubusercontent.com`) for data, and Google
+Fonts for styles and fonts. If you add another external service, add its origin to `csp` there.
+
+A `<meta>` policy cannot set `frame-ancestors` (clickjacking protection). When you pick a host,
+also send `Content-Security-Policy: frame-ancestors 'none'` as a response header.

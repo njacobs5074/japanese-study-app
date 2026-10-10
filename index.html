@@ -3,18 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      // Use the saved theme choice if there is one, otherwise the system setting.
-      (function () {
-        var saved;
-        try {
-          saved = localStorage.getItem('theme');
-        } catch (e) {}
-        var dark =
-          saved === 'dark' || (saved !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
-        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-      })();
-    </script>
+    <script src="/theme-init.js"></script>
     <title>日本語を勉強しましょう！</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
