@@ -18,12 +18,13 @@
 }
 
 :root[data-theme='dark'] {
-  --ground: #131826;
-  --surface: #1c2336;
-  --ink: #e8ecf4;
-  --muted: #a3adc4;
-  --hairline: #323b52;
-  --accent: #f0735e;
-  --accent-solid: #c23a24;
+  /* Approximates macOS dark appearance (window background, controls, labels, separators). */
+  --ground: #1e1e1e;
+  --surface: #2c2c2e;
+  --ink: #f5f5f7;
+  --muted: #98989d;
+  --hairline: #3a3a3c;
+  --accent: #ff6b61;
+  --accent-solid: #d13529;
   color-scheme: dark;
 }
