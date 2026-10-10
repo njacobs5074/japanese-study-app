@@ -10,7 +10,6 @@ export interface CachedSentences {
 }
 
 export interface SavedText {
-  title: string;
   body: string;
   /** Tokenized lines, so the passage can be shown again without reloading the tokenizer. */
   lines: Segment[][];

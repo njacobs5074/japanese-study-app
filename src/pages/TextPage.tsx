@@ -9,7 +9,6 @@ type Status = 'idle' | 'loading-dictionary' | 'error';
 
 export default function TextPage() {
   const { loaded, storageError, text, studyList, saveText, toggleWord } = useStudy();
-  const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [seeded, setSeeded] = useState(false);
@@ -17,7 +16,6 @@ export default function TextPage() {
   // Fill the form from the saved text once, after it has loaded from IndexedDB.
   useEffect(() => {
     if (loaded && !seeded) {
-      setTitle(text?.title ?? '');
       setBody(text?.body ?? '');
       setSeeded(true);
     }
@@ -28,7 +26,7 @@ export default function TextPage() {
     try {
       const tokenizer = await loadTokenizer();
       const lines = segmentText(tokenizer, body);
-      saveText({ title: title.trim(), body, lines });
+      saveText({ body, lines });
       setStatus('idle');
     } catch (e) {
       console.error(e);
@@ -48,17 +46,7 @@ export default function TextPage() {
                 Your browser blocked local storage, so your text and study list won’t be kept.
               </p>
             )}
-            <label htmlFor="title">Title (shown in the header)</label>
-            <input
-              id="title"
-              className="text-input"
-              lang="ja"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <label htmlFor="passage" className="field-label">
-              Paste a passage
-            </label>
+            <label htmlFor="passage">Paste a passage</label>
             <textarea
               id="passage"
               lang="ja"

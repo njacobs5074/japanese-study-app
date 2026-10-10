@@ -372,25 +372,6 @@ textarea {
 }
 
 /* Text */
-.field-label {
-  display: block;
-  margin-top: 1rem;
-}
-
-.text-input {
-  display: block;
-  width: 100%;
-  margin-top: 0.4rem;
-  min-height: 44px;
-  padding: 0 0.75rem;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-button);
-  background: var(--surface);
-  color: var(--ink);
-  font: inherit;
-  font-size: 1.1rem;
-}
-
 .passage p {
   font-size: 1.4rem;
   line-height: 2.4;

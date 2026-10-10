@@ -27,6 +27,14 @@ const MoonIcon = () => (
   </svg>
 );
 
+/** Header label for the current text: its first line, shortened. */
+function textLabel(body: string | undefined): string | undefined {
+  const first = body?.split(/\r?\n/).find((l) => l.trim() !== '')?.trim();
+  if (!first) return undefined;
+  const chars = [...first];
+  return chars.length > 16 ? `${chars.slice(0, 16).join('')}…` : first;
+}
+
 type Theme = 'light' | 'dark';
 
 function currentTheme(): Theme {
@@ -64,7 +72,7 @@ export default function Layout() {
             <NavLink to="/sentences">Sentences</NavLink>
           </nav>
           <p className="studying">
-            Studying: {text?.title ? <span lang="ja">{text.title}</span> : 'no text yet'}
+            Studying: {textLabel(text?.body) ? <span lang="ja">{textLabel(text?.body)}</span> : 'no text yet'}
           </p>
         </div>
       </header>
