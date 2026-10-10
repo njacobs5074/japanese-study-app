@@ -448,3 +448,14 @@ textarea {
 .clear-row {
   margin-top: 0.5rem;
 }
+
+/* Grade buttons: four equal columns that stay on one line, even on a phone. */
+.grade-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.grade-row .button {
+  padding: 0 0.25rem;
+}

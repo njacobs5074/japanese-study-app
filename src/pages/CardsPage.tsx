@@ -134,7 +134,7 @@ export default function CardsPage() {
                       <KanjiDiagram key={c} char={c} />
                     ))}
                   </div>
-                  <div className="button-row" role="group" aria-label="How well did you remember it?">
+                  <div className="grade-row" role="group" aria-label="How well did you remember it?">
                     {GRADES.map(({ grade: g, label }) => (
                       <button key={g} type="button" className="button" onClick={() => grade(g)}>
                         {label}
