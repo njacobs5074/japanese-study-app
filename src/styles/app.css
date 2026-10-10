@@ -236,3 +236,89 @@ textarea {
   font-weight: 500;
   cursor: pointer;
 }
+
+/* Cards */
+.word-front {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 12vw, 5rem);
+  line-height: 1.2;
+  margin: 0.5rem 0;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.jlpt-badge {
+  display: inline-block;
+  padding: 0 0.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.reading {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.meaning {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+}
+
+.kanji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.kanji-figure {
+  margin: 0;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-button);
+  padding: 0.75rem;
+}
+
+.kanji-svg {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 1;
+  margin: 0 auto 0.5rem;
+  color: var(--ink);
+}
+
+.kanji-svg--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kanji-char {
+  font-size: 1.4rem;
+}
+
+.kanji-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 0.75rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+.kanji-facts dt {
+  color: var(--muted);
+}
+
+.kanji-facts dd {
+  margin: 0;
+}

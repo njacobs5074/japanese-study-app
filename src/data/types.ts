@@ -6,9 +6,16 @@ export interface DictionaryEntry {
   gloss: string;
 }
 
+export interface KanjiInfo {
+  onyomi: string[];
+  kunyomi: string[];
+  meaning: string;
+}
+
 /** Source of readings and definitions. Real implementation pending (open decision 1). */
 export interface Dictionary {
   lookup(word: string): DictionaryEntry | undefined;
+  kanjiInfo(char: string): KanjiInfo | undefined;
 }
 
 /** Source of JLPT levels per kanji. Real implementation pending (open decision 2). */
