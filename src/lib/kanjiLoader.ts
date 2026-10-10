@@ -1,7 +1,10 @@
 import { cacheKanjiSvg, getCachedKanjiSvg } from './db';
 import { kanjiFilename, parseKanjiSvg, type KanjiStrokes } from './kanjivg';
 
-const GITHUB_RAW = 'https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/';
+// Pinned to a commit (not a branch) so the data cannot change underneath us.
+// To update, pick a newer KanjiVG commit and replace the SHA.
+const KANJIVG_COMMIT = '70a0b7ae0c18ceb5cb358274b029cce0234a43bc';
+const GITHUB_RAW = `https://raw.githubusercontent.com/KanjiVG/kanjivg/${KANJIVG_COMMIT}/kanji/`;
 const memory = new Map<string, Promise<KanjiStrokes>>();
 
 async function fetchSvg(url: string): Promise<string | undefined> {

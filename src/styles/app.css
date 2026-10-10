@@ -444,9 +444,7 @@ textarea {
 
 .notice summary {
   cursor: pointer;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
+  padding: 0.6rem 0; /* comfortable tap target; keeps the default expand arrow */
 }
 
 .notice pre {

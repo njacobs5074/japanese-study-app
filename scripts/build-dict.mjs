@@ -3,7 +3,8 @@
 // Output (gzipped; the browser decompresses them): public/dict/jmdict.json.gz and kanjidic.json.gz.
 // Skipped when public/dict/VERSION already matches; pass --force to rebuild.
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 
 const VERSION = '3.6.2+20261005200550';
@@ -11,12 +12,22 @@ const RELEASE = `https://github.com/scriptin/jmdict-simplified/releases/download
 const CACHE = '.cache/dict';
 const OUT = 'public/dict';
 
+// SHA-256 of each release archive (matches the digests GitHub lists for the release assets).
+// Update these together with VERSION.
 const SOURCES = [
-  { name: 'jmdict-eng', file: `jmdict-eng-${VERSION.split('+')[0]}.json` },
-  { name: 'kanjidic2-en', file: `kanjidic2-en-${VERSION.split('+')[0]}.json` },
+  {
+    name: 'jmdict-eng',
+    file: `jmdict-eng-${VERSION.split('+')[0]}.json`,
+    sha256: '081f5059d02d28e2d4e31f2afe9b9c0a56bb8c7003c33dc9420fea6329cb2550',
+  },
+  {
+    name: 'kanjidic2-en',
+    file: `kanjidic2-en-${VERSION.split('+')[0]}.json`,
+    sha256: 'f219481a28eec2979b21721181f249a7f21af61e4f1698a24acfd2b34608b5ae',
+  },
 ];
 
-async function fetchSource({ name, file }) {
+async function fetchSource({ name, file, sha256 }) {
   const json = `${CACHE}/${name}/${file}`;
   if (existsSync(json)) return JSON.parse(readFileSync(json, 'utf8'));
   mkdirSync(`${CACHE}/${name}`, { recursive: true });
@@ -25,7 +36,12 @@ async function fetchSource({ name, file }) {
   console.log(`Downloading ${url}`);
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Download failed (${res.status}): ${url}`);
-  writeFileSync(archive, Buffer.from(await res.arrayBuffer()));
+  const bytes = Buffer.from(await res.arrayBuffer());
+  const actual = createHash('sha256').update(bytes).digest('hex');
+  if (actual !== sha256) {
+    throw new Error(`Checksum mismatch for ${url}\n  expected ${sha256}\n  got      ${actual}`);
+  }
+  writeFileSync(archive, bytes);
   execFileSync('tar', ['-xzf', archive, '-C', `${CACHE}/${name}`]);
   return JSON.parse(readFileSync(json, 'utf8'));
 }

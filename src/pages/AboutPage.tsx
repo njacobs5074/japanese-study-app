@@ -71,11 +71,25 @@ export default function AboutPage() {
         </section>
 
         <section>
-          <h2>Your own text</h2>
+          <h2>Your own text and privacy</h2>
           <p>
-            The passage you paste, your study list and your review progress are stored
-            only in this browser (IndexedDB). Nothing you write is sent to a server.
+            The passage you paste, your study list and your review progress are stored only in this
+            browser (IndexedDB). Your passage is never sent anywhere. There is no account and no
+            server-side storage.
           </p>
+          <p>Using the app does make a few requests to other services:</p>
+          <ul>
+            <li>
+              Each word you add to your study list is sent as a search to the Tatoeba API
+              (api.tatoeba.org) to find example sentences, once per word.
+            </li>
+            <li>
+              The first time a kanji’s stroke diagram is shown, its file is fetched from the KanjiVG
+              repository on GitHub (raw.githubusercontent.com).
+            </li>
+            <li>The page fonts are loaded from Google Fonts.</li>
+          </ul>
+          <p>Those services can see your IP address and what you request from them.</p>
         </section>
       </div>
     </Card>
