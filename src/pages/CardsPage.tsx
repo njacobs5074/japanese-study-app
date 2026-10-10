@@ -73,6 +73,19 @@ export default function CardsPage() {
     }
   }
 
+  /** Makes every card due again right away, keeping each card's interval and ease. */
+  async function resetAll() {
+    const due = studyList.map((i) => ({ ...(reviews!.get(i.word) ?? newReview(i.word)), dueAt: 0 }));
+    setReviews(new Map([...reviews!, ...due.map((r): [string, ReviewRecord] => [r.word, r])]));
+    setNow(Date.now());
+    setRevealed(false);
+    try {
+      await Promise.all(due.map(putReview));
+    } catch {
+      setError(true);
+    }
+  }
+
   return (
     <TwoColumn
       main={
@@ -138,6 +151,9 @@ export default function CardsPage() {
                 No cards are due.
                 {nextDue ? ` Next review: ${new Date(nextDue).toLocaleString()}.` : ''}
               </p>
+              <button type="button" className="button button--primary" onClick={resetAll}>
+                Reset
+              </button>
             </>
           )}
         </Card>
