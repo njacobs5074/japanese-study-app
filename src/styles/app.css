@@ -447,3 +447,7 @@ textarea {
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
+
+.clear-row {
+  margin-top: 0.5rem;
+}

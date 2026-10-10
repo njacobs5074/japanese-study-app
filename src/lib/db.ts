@@ -98,3 +98,7 @@ export async function putStudyItem(item: StudyItem): Promise<void> {
 export async function deleteStudyItem(word: string): Promise<void> {
   await (await db()).delete('studyList', word);
 }
+
+export async function clearStudyList(): Promise<void> {
+  await (await db()).clear('studyList');
+}

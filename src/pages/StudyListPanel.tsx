@@ -4,7 +4,7 @@ import { shortGloss } from '../data/jmdict';
 import { useStudy } from '../state/StudyContext';
 
 export default function StudyListPanel() {
-  const { studyList, removeWord, dictionaryError } = useStudy();
+  const { studyList, removeWord, clearAll, dictionaryError } = useStudy();
   const empty = studyList.length === 0;
 
   return (
@@ -65,6 +65,11 @@ export default function StudyListPanel() {
             </Link>
           </>
         )}
+      </div>
+      <div className="button-row clear-row">
+        <button type="button" className="button" onClick={clearAll} disabled={empty}>
+          Clear all
+        </button>
       </div>
     </Card>
   );

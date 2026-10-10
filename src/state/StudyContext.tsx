@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { dictionary } from '../data/jmdict';
 import {
+  clearStudyList,
   deleteStudyItem,
   getSavedText,
   getStudyList,
@@ -22,6 +23,7 @@ interface StudyContextValue {
   saveText: (text: SavedText) => void;
   toggleWord: (segment: Segment) => void;
   removeWord: (word: string) => void;
+  clearAll: () => void;
 }
 
 const StudyContext = createContext<StudyContextValue | null>(null);
@@ -66,6 +68,11 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     [persist],
   );
 
+  const clearAll = useCallback(() => {
+    setStudyList([]);
+    persist(clearStudyList());
+  }, [persist]);
+
   const toggleWord = useCallback(
     (segment: Segment) => {
       const word = segment.word;
@@ -106,8 +113,8 @@ export function StudyProvider({ children }: { children: ReactNode }) {
   }, [studyList, persist]);
 
   const value = useMemo(
-    () => ({ loaded, storageError, dictionaryError, text, studyList, saveText, toggleWord, removeWord }),
-    [loaded, storageError, dictionaryError, text, studyList, saveText, toggleWord, removeWord],
+    () => ({ loaded, storageError, dictionaryError, text, studyList, saveText, toggleWord, removeWord, clearAll }),
+    [loaded, storageError, dictionaryError, text, studyList, saveText, toggleWord, removeWord, clearAll],
   );
   return <StudyContext.Provider value={value}>{children}</StudyContext.Provider>;
 }
