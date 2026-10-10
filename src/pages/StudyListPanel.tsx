@@ -12,16 +12,22 @@ export default function StudyListPanel() {
       {empty ? (
         <p className="muted">Tap words in the text to add them here.</p>
       ) : (
-        <ul className="word-list">
+        <ul className="word-list study-list">
           {studyList.map((item) => (
             <li key={item.word}>
               <span className="word" lang="ja">
                 {item.word}
               </span>
-              <span lang="ja">{item.kana !== item.word ? item.kana : ''}</span>
-              <span className="muted study-gloss">
-                {item.gloss ? shortGloss(item.gloss) : item.lookedUp ? 'No definition found' : dictionaryError ? '' : 'Looking up…'}
-              </span>
+              <div className="study-text">
+                {item.kana !== item.word && (
+                  <span className="study-kana" lang="ja">
+                    {item.kana}
+                  </span>
+                )}
+                <span className="muted study-gloss">
+                  {item.gloss ? shortGloss(item.gloss) : item.lookedUp ? 'No definition found' : dictionaryError ? '' : 'Looking up…'}
+                </span>
+              </div>
               <button
                 type="button"
                 className="icon-button"
