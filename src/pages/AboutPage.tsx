@@ -1,6 +1,5 @@
 import Card from '../components/Card';
-
-const todo = (text: string) => <p className="placeholder">TODO: {text}</p>;
+import { IPADIC_NOTICE } from '../data/ipadicNotice';
 
 export default function AboutPage() {
   return (
@@ -61,7 +60,14 @@ export default function AboutPage() {
             using its bundled IPADIC dictionary. The dictionary is downloaded the first time you
             split a text.
           </p>
-          {todo('add the exact IPADIC copyright and licence notice (ICOT / NAIST) after verifying its wording.')}
+          <details className="notice">
+            <summary>Dictionary copyright and licence notice</summary>
+            <p className="muted">
+              mecab-ipadic-2.7.0-20070801, as reproduced in the kuromoji.js{' '}
+              <a href="https://github.com/takuyaa/kuromoji.js/blob/master/NOTICE.md">NOTICE.md</a>:
+            </p>
+            <pre>{IPADIC_NOTICE}</pre>
+          </details>
         </section>
 
         <section>
