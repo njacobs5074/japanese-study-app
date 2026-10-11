@@ -74,8 +74,19 @@ about 12 MB from GitHub (needs network and `tar`).
   in `src/data/ipadicNotice.ts` (copied verbatim; do not edit).
 - **Pinned data:** KanjiVG commit in `kanjiLoader.ts`; dictionary release and SHA-256 hashes in
   `scripts/build-dict.mjs`. Update the hashes together with the version.
-- Paths for fetched files must use `import.meta.env.BASE_URL` so the app can be served from a
-  subpath. The router currently has no `basename`; add one before deploying under a subpath.
+- Paths for fetched files must use `import.meta.env.BASE_URL`, and the router's `basename` comes
+  from it too: production is served from `/japanese-study-app/` on GitHub Pages (`base` in
+  `vite.config.ts`, override with `BASE_PATH`), the dev server from `/`. The build also writes
+  `dist/404.html` (a copy of `index.html`) so deep links and refreshes work on Pages.
+
+## CI/CD
+
+`.github/workflows/ci.yml` (type check, tests, build, `npm audit --audit-level=high`) runs on pull
+requests and pushes to `main`. `deploy.yml` re-runs the checks and publishes `dist/` to GitHub
+Pages on every push to `main`; the repo's Pages source must be "GitHub Actions". The README
+badges show both. Pin every action to a commit SHA with a `# vX` comment (resolve SHAs with
+`gh api repos/<owner>/<action>/git/ref/tags/<tag>`, dereferencing annotated tags). CI uses Node 24
+because Vitest requires Node 22.12+/24+. Before pushing, run `npx tsc -b && npm test && npm run build`.
 
 ## Testing
 

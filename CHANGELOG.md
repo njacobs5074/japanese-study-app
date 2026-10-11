@@ -11,7 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- MIT `LICENSE`, `CHANGELOG.md`, `CONTRIBUTORS.md` and `CLAUDE.md`.
+- MIT `LICENSE`, `CHANGELOG.md`, `CONTRIBUTORS.md`, `CLAUDE.md` and `BACKLOG.md`.
+- GitHub Actions: a CI workflow (type check, tests, build, `npm audit`) and a workflow that
+  deploys the site to GitHub Pages on every push to `main`, with status badges in the README.
+- Production builds are served from the `/japanese-study-app/` subpath and include a `404.html`
+  fallback so deep links and refreshes work on GitHub Pages.
 
 ---
 

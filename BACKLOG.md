@@ -11,12 +11,12 @@
 - [ ] Accounts or sync across devices (out of scope for v1; would need a backend)
 
 ## Deployment and maintenance
-- [ ] Deploy to GitHub Pages at njacobs5074.github.io/japanese-study-app/ and link to it from www.highlandcows.com
-    - [ ] Set the Vite `base` path and add a matching `basename` to the router
-    - [ ] Publish a `404.html` copy of `index.html` so deep links and refreshes work
-    - [ ] Add a deploy workflow (build with the dictionary download, actions pinned to commit SHAs) and switch the repo's Pages source to GitHub Actions
+- [ ] Deploy to GitHub Pages at njacobs5074.github.io/japanese-study-app/ and link to it from www.highlandcows.com (deployed; the link is still to do)
+    - [x] Set the Vite `base` path and add a matching `basename` to the router
+    - [x] Publish a `404.html` copy of `index.html` so deep links and refreshes work
+    - [x] Add a deploy workflow (build with the dictionary download, actions pinned to commit SHAs) and switch the repo's Pages source to GitHub Actions
 - [ ] When a host is chosen, send `Content-Security-Policy: frame-ancestors 'none'` as a response header (a `<meta>` policy cannot set it; GitHub Pages cannot send custom headers)
-- [ ] CI on every push: type check, tests, `npm audit` and build
+- [x] CI on every push: type check, tests, `npm audit` and build
 - [ ] Automate updates to pinned data: the KanjiVG commit, the jmdict-simplified release and its SHA-256 hashes (Dependabot or Renovate for npm packages)
 - [ ] Create the `v0.1.0` git tag and GitHub release (the changelog links assume it)
 

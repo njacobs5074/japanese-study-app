@@ -1,5 +1,11 @@
 # 日本語を勉強しましょう！
 
+[![CI](https://github.com/njacobs5074/japanese-study-app/actions/workflows/ci.yml/badge.svg)](https://github.com/njacobs5074/japanese-study-app/actions/workflows/ci.yml)
+[![Deploy](https://github.com/njacobs5074/japanese-study-app/actions/workflows/deploy.yml/badge.svg)](https://github.com/njacobs5074/japanese-study-app/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+**Live site:** https://njacobs5074.github.io/japanese-study-app/
+
 A single-user web app for studying Japanese vocabulary from a text you are reading.
 Everything you create is stored in your browser (IndexedDB); there is no backend.
 
@@ -25,6 +31,18 @@ npm test         # unit tests
 the live OpenAPI spec; that file is committed.
 
 The dictionary outputs are git-ignored. Data credits and licences are on the app's About page.
+
+## CI and deployment
+
+- **CI** (`.github/workflows/ci.yml`) runs on every pull request and push to `main`: type check,
+  tests, production build and `npm audit` (fails on high-severity advisories).
+- **Deploy** (`.github/workflows/deploy.yml`) runs on every push to `main`: type check, tests,
+  build, then publishes `dist/` to GitHub Pages. It can also be started by hand from the Actions
+  tab. In the repository settings, Pages must use the "GitHub Actions" source.
+
+Production builds use the base path `/japanese-study-app/` (override with the `BASE_PATH`
+environment variable) and also write `dist/404.html`, a copy of the app shell, because GitHub
+Pages has no single-page-app fallback. All actions are pinned to commit SHAs.
 
 ## Content-Security-Policy
 
