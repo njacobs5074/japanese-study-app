@@ -13,9 +13,12 @@ there were superseded, e.g. JLPT levels were dropped and the text title field wa
 
 ## Workflow
 
-- For any non-trivial change (features, fixes, refactors, significant docs) create a branch first.
-  Use conventional-commit naming: `feat/…`, `fix/…`, `refactor/…`, `docs/…`, `chore/…`.
-  Typo fixes and trivial comment edits may go straight on `main`.
+- `main` is protected by a ruleset ("Protect main"): no direct pushes, force pushes or deletion.
+  **Every change, including typo fixes, goes through a branch and a pull request**, and the
+  `check` job from `ci.yml` must pass before merging. No approving review is required (solo
+  repo). Merging to `main` deploys the site, so do not merge without the user's go-ahead.
+- Name branches in conventional-commit style: `feat/…`, `fix/…`, `refactor/…`, `docs/…`,
+  `chore/…`.
 - Commit messages follow conventional commits (`feat:`, `fix:`, `style:`, `docs:`, `chore:`,
   `security:`).
 - Update `CHANGELOG.md` (under `[Unreleased]`) for user-visible changes.
