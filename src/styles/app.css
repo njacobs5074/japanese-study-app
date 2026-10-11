@@ -454,3 +454,7 @@ textarea {
   color: var(--muted);
   margin: 0;
 }
+
+.action-row {
+  margin: 1rem 0;
+}

@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { dictionary } from '../data/jmdict';
 import {
   clearStudyList,
+  deleteSavedText,
   deleteStudyItem,
   getSavedText,
   getStudyList,
@@ -21,6 +22,8 @@ interface StudyContextValue {
   text: SavedText | null;
   studyList: StudyItem[];
   saveText: (text: SavedText) => void;
+  /** Forgets the saved passage and its split words; the study list is left alone. */
+  clearText: () => void;
   toggleWord: (segment: Segment) => void;
   removeWord: (word: string) => void;
   clearAll: () => void;
@@ -59,6 +62,11 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     },
     [persist],
   );
+
+  const clearText = useCallback(() => {
+    setText(null);
+    persist(deleteSavedText());
+  }, [persist]);
 
   const removeWord = useCallback(
     (word: string) => {
@@ -113,8 +121,8 @@ export function StudyProvider({ children }: { children: ReactNode }) {
   }, [studyList, persist]);
 
   const value = useMemo(
-    () => ({ loaded, storageError, dictionaryError, text, studyList, saveText, toggleWord, removeWord, clearAll }),
-    [loaded, storageError, dictionaryError, text, studyList, saveText, toggleWord, removeWord, clearAll],
+    () => ({ loaded, storageError, dictionaryError, text, studyList, saveText, clearText, toggleWord, removeWord, clearAll }),
+    [loaded, storageError, dictionaryError, text, studyList, saveText, clearText, toggleWord, removeWord, clearAll],
   );
   return <StudyContext.Provider value={value}>{children}</StudyContext.Provider>;
 }

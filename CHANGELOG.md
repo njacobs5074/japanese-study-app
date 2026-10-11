@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   deploys the site to GitHub Pages on every push to `main`, with status badges in the README.
 - Production builds are served from the `/japanese-study-app/` subpath and include a `404.html`
   fallback so deep links and refreshes work on GitHub Pages.
+- **Text page:** a Clear button next to "Split into words" empties the text box and the split
+  words but leaves the study list alone.
+
+### Changed
+
+- **Text page:** the text box label now reads "Type or paste Japanese text".
 
 ---
 
