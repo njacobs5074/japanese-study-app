@@ -35,3 +35,14 @@ Fonts for styles and fonts. If you add another external service, add its origin 
 
 A `<meta>` policy cannot set `frame-ancestors` (clickjacking protection). When you pick a host,
 also send `Content-Security-Policy: frame-ancestors 'none'` as a response header.
+
+## Licence
+
+The source code is released under the [MIT licence](LICENSE). The app uses third-party code and
+data under their own licences, which are not changed by this one:
+
+- npm dependencies are MIT, Apache-2.0, ISC, BSD-3-Clause or MPL-2.0 (development tools only).
+- JMdict and KANJIDIC2 (EDRDG, CC BY-SA 4.0), KanjiVG (CC BY-SA 3.0), Tatoeba sentences
+  (CC BY 2.0 FR / CC0 1.0) and the IPADIC dictionary used by kuromoji are fetched or built at
+  install or run time and are not part of this repository. Their credits and licences are on the
+  app's About page.

@@ -2,6 +2,8 @@
   "name": "japanese-study-app",
   "private": true,
   "version": "0.1.0",
+  "description": "Study Japanese vocabulary from a text you are reading: flashcards with stroke-order diagrams and example sentences.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "copy-dict": "node scripts/copy-dict.mjs",
