@@ -55,11 +55,14 @@ export default function TextPage() {
                 Your browser blocked local storage, so your text and study list won’t be kept.
               </p>
             )}
-            <label htmlFor="passage">Type or paste Japanese text</label>
+            <label htmlFor="passage" className="visually-hidden">
+              Type or paste Japanese text
+            </label>
             <textarea
               id="passage"
               lang="ja"
               rows={6}
+              placeholder="Type or paste Japanese here..."
               value={body}
               onChange={(e) => setBody(e.target.value)}
             />
