@@ -9,7 +9,7 @@ import StudyListPanel from './StudyListPanel';
 type Status = 'idle' | 'loading-dictionary' | 'error';
 
 export default function TextPage() {
-  const { loaded, storageError, text, studyList, saveText, toggleWord } = useStudy();
+  const { loaded, storageError, text, studyList, saveText, clearText, toggleWord } = useStudy();
   const [body, setBody] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [seeded, setSeeded] = useState(false);
@@ -36,6 +36,13 @@ export default function TextPage() {
     }
   }
 
+  /** Empties the text box and the split words. The study list is deliberately left as is. */
+  function clear() {
+    setBody('');
+    setStatus('idle');
+    clearText();
+  }
+
   const selected = new Set(studyList.map((i) => i.word));
 
   return (
@@ -48,7 +55,7 @@ export default function TextPage() {
                 Your browser blocked local storage, so your text and study list won’t be kept.
               </p>
             )}
-            <label htmlFor="passage">Paste a passage</label>
+            <label htmlFor="passage">Type or paste Japanese text</label>
             <textarea
               id="passage"
               lang="ja"
@@ -56,7 +63,7 @@ export default function TextPage() {
               value={body}
               onChange={(e) => setBody(e.target.value)}
             />
-            <p>
+            <div className="button-row action-row">
               <button
                 type="button"
                 className="button button--primary"
@@ -65,7 +72,15 @@ export default function TextPage() {
               >
                 {status === 'loading-dictionary' ? 'Splitting…' : 'Split into words'}
               </button>
-            </p>
+              <button
+                type="button"
+                className="button"
+                onClick={clear}
+                disabled={status === 'loading-dictionary' || (body === '' && !text)}
+              >
+                Clear
+              </button>
+            </div>
             {status === 'loading-dictionary' && (
               <p className="muted" role="status">
                 Loading the word splitter (about 17 MB, first time only)…

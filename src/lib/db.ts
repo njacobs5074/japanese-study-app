@@ -86,6 +86,10 @@ export async function putSavedText(text: SavedText): Promise<void> {
   await (await db()).put('text', text, 'current');
 }
 
+export async function deleteSavedText(): Promise<void> {
+  await (await db()).delete('text', 'current');
+}
+
 export async function getStudyList(): Promise<StudyItem[]> {
   const all = await (await db()).getAll('studyList');
   return all.sort((a, b) => a.addedAt - b.addedAt);
