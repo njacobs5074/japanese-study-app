@@ -91,6 +91,15 @@ export default function AboutPage() {
           </ul>
           <p>Those services can see your IP address and what you request from them.</p>
         </section>
+
+        <section>
+          <h2>Source code</h2>
+          <p>
+            This app is open source, released under the MIT licence. The code is on{' '}
+            <a href="https://github.com/njacobs5074/japanese-study-app">GitHub</a>, where you can
+            also report problems or suggest changes.
+          </p>
+        </section>
       </div>
     </Card>
   );

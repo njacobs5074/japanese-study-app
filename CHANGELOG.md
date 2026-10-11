@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   fallback so deep links and refreshes work on GitHub Pages.
 - **Text page:** a Clear button next to "Split into words" empties the text box and the split
   words but leaves the study list alone.
+- **About page:** a "Source code" section linking to the GitHub repository.
 
 ### Changed
 
