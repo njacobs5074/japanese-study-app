@@ -11,7 +11,7 @@
 - [ ] Accounts or sync across devices (out of scope for v1; would need a backend)
 
 ## Deployment and maintenance
-- [ ] Deploy to GitHub Pages at njacobs5074.github.io/japanese-study-app/ and link to it from www.highlandcows.com (deployed; the link is still to do)
+- [x] Deploy to GitHub Pages at njacobs5074.github.io/japanese-study-app/ and link to it from www.highlandcows.com
     - [x] Set the Vite `base` path and add a matching `basename` to the router
     - [x] Publish a `404.html` copy of `index.html` so deep links and refreshes work
     - [x] Add a deploy workflow (build with the dictionary download, actions pinned to commit SHAs) and switch the repo's Pages source to GitHub Actions
