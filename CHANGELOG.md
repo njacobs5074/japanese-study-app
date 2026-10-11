@@ -21,7 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Text page:** the text box label now reads "Type or paste Japanese text".
+- **Text page:** the prompt is now a hint inside the text box ("Type or paste Japanese
+  here...") instead of a label above it. A hidden label keeps the field accessible to screen
+  readers.
 
 ---
 
