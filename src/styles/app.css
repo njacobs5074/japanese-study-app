@@ -476,3 +476,34 @@ textarea::placeholder {
   color: var(--muted);
   opacity: 1; /* some browsers dim placeholders; keep the contrast of --muted */
 }
+
+/* Cards: the queue is a list of buttons that pick which card to study */
+.queue-list li {
+  padding: 0.15rem 0;
+}
+
+.queue-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.queue-item:hover,
+.queue-item[aria-current='true'] {
+  background: var(--ground);
+}
+
+.queue-item[aria-current='true'] {
+  border-color: var(--hairline);
+  font-weight: 700;
+}

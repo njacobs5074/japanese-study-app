@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Text page:** a Clear button next to "Split into words" empties the text box and the split
   words but leaves the study list alone.
 - **About page:** a "Source code" section linking to the GitHub repository.
+- **Cards page:** click a word in the Queue to study it next. The chosen card replaces the
+  current one (its answer hidden again); grading it returns the queue to its normal order. Works
+  for words that are not due yet and when everything is caught up. On narrow screens the page
+  scrolls back up to the card.
 
 ### Changed
 

@@ -31,3 +31,17 @@ export function buildQueue(
     return { ...item, status: 'next' as const };
   });
 }
+
+/**
+ * Applies a manual choice to a queue: the chosen word becomes the current card ("now") and the
+ * word that was current becomes "next". The order of the list is left alone so it does not jump
+ * around while you click. An unknown or empty choice leaves the queue unchanged.
+ */
+export function withSelection(queue: QueueItem[], selectedWord: string | null): QueueItem[] {
+  if (!selectedWord || !queue.some((i) => i.word === selectedWord)) return queue;
+  return queue.map((item) => {
+    if (item.word === selectedWord) return { ...item, status: 'now' as const };
+    if (item.status === 'now') return { ...item, status: 'next' as const };
+    return item;
+  });
+}
