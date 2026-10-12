@@ -41,6 +41,52 @@ function readingOf(tokens: IpadicFeatures[]): string | undefined {
   return katakanaToHiragana(tokens.map((t) => t.reading).join(''));
 }
 
+/**
+ * The suffix 的 (as in 個人的, 具体的) has its own tag in the dictionary: noun / suffix /
+ * adjective stem. A standalone 的 ("target", as in 的を射る) is tagged as an ordinary noun.
+ */
+function isTekiSuffix(token: IpadicFeatures): boolean {
+  return (
+    token.surface_form === '的' &&
+    token.pos === '名詞' &&
+    token.pos_detail_1 === '接尾' &&
+    token.pos_detail_2 === '形容動詞語幹'
+  );
+}
+
+/** A noun can take 的, unless it is a number or itself a suffix (so 化 + 的 is not merged). */
+function canTakeTeki(token: IpadicFeatures): boolean {
+  return token.pos === '名詞' && token.pos_detail_1 !== '数' && token.pos_detail_1 !== '接尾';
+}
+
+/**
+ * Joins a noun and a following suffix 的 into one token (個人 + 的 -> 個人的), since the
+ * tokenizer always splits them but they are one word. The merged token keeps the noun's tags,
+ * uses the joined text as its dictionary form, and joins the readings (unknown if either is).
+ */
+export function mergeTekiSuffix(tokens: IpadicFeatures[]): IpadicFeatures[] {
+  const out: IpadicFeatures[] = [];
+  for (const token of tokens) {
+    const prev = out.at(-1);
+    if (prev && isTekiSuffix(token) && canTakeTeki(prev)) {
+      const surface = prev.surface_form + token.surface_form;
+      const known = (r: string | undefined) => (r && r !== '*' ? r : undefined);
+      const join = (a: string | undefined, b: string | undefined) =>
+        known(a) && known(b) ? known(a)! + known(b)! : '*';
+      out[out.length - 1] = {
+        ...prev,
+        surface_form: surface,
+        basic_form: surface,
+        reading: join(prev.reading, token.reading),
+        pronunciation: join(prev.pronunciation, token.pronunciation),
+      };
+    } else {
+      out.push(token);
+    }
+  }
+  return out;
+}
+
 /** Splits a passage into lines of segments. Blank lines are dropped. */
 export function segmentText(tokenizer: Tokenizer, text: string): Segment[][] {
   const readingCache = new Map<string, string | undefined>();
@@ -55,7 +101,7 @@ export function segmentText(tokenizer: Tokenizer, text: string): Segment[][] {
     .split(/\r?\n/)
     .filter((line) => line.trim() !== '')
     .map((line) =>
-      tokenizer.tokenize(line).map((token): Segment => {
+      mergeTekiSuffix(tokenizer.tokenize(line)).map((token): Segment => {
         const kind = classify(token);
         if (kind !== 'word') return { surface: token.surface_form, kind };
         const word = dictionaryForm(token);
