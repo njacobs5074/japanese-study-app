@@ -108,5 +108,7 @@ IndexedDB tests; verify UI changes in a browser (check dark mode and a ~375px-wi
 ## Known limitations
 
 - Conjugated words are split by kuromoji (食べた → 食べ + た); only the stem is tappable.
+- `mergeTekiSuffix()` in `tokenizer.ts` joins noun + suffix 的 (個人 + 的 → 個人的) using the
+  dictionary's own tag for the suffix. Other noun suffixes (性, 化, 者, …) are still split.
 - A sentence only highlights the target word on an exact match, so inflected forms are missed.
 - Very large pasted passages are tokenized on the main thread and can briefly freeze the page.

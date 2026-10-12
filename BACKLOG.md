@@ -26,6 +26,7 @@
 ## Fixes for known limitations
 - [ ] Highlight inflected forms of the target word in example sentences (only exact matches are marked today)
 - [ ] Conjugated words are split into pieces (食べた becomes 食べ + た) and only the stem is tappable: allow selecting a multi-token span, or merge common endings
+- [ ] Merge other noun suffixes (性, 化, 者, …) when the combined word is in the dictionary (可能性, 近代化 and 科学者 are; 30分 and 会議中 must stay split). The suffix 的 is already merged; the general rule needs the dictionary loaded before splitting
 - [ ] Tokenize in a Web Worker so a very large passage does not freeze the page
 - [ ] Skip unapproved Tatoeba sentences, which the API flags
 - [ ] Fetch fresh example sentences for a word (results are cached for good and capped at 10)

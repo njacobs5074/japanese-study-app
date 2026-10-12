@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Text page:** a Clear button next to "Split into words" empties the text box and the split
   words but leaves the study list alone.
 - **About page:** a "Source code" section linking to the GitHub repository.
+- **Text page:** words ending in the suffix 的 (個人的, 具体的, 世界的, …) are now one tappable word
+  with the right reading and definition, instead of being split into 個人 + 的. A standalone 的
+  ("target") and numbers followed by 分 are unaffected.
 - **Cards page:** click a word in the Queue to study it next. The chosen card replaces the
   current one (its answer hidden again); grading it returns the queue to its normal order. Works
   for words that are not due yet and when everything is caught up. On narrow screens the page
