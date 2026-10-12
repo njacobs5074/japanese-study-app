@@ -6,7 +6,7 @@ import TwoColumn from '../components/TwoColumn';
 import { useStudy } from '../state/StudyContext';
 import { getAllReviews, putReview } from '../lib/db';
 import { kanjiChars } from '../lib/kanjivg';
-import { buildQueue } from '../lib/queue';
+import { buildQueue, withSelection } from '../lib/queue';
 import { newReview, schedule, type Grade, type ReviewRecord } from '../lib/scheduling';
 
 const GRADES: { grade: Grade; label: string }[] = [
@@ -24,6 +24,8 @@ export default function CardsPage() {
   const [reviews, setReviews] = useState<Map<string, ReviewRecord> | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [revealed, setRevealed] = useState(false);
+  /** A word picked from the queue; overrides the due order until the card is graded. */
+  const [selected, setSelected] = useState<string | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -32,6 +34,18 @@ export default function CardsPage() {
       setReviews(new Map());
     });
   }, []);
+
+  // On narrow screens the queue sits below the card, so after picking a word bring the new card's
+  // top into view. Done after render so it uses the new card's height; does nothing when the card
+  // is already on screen (e.g. on wide layouts).
+  useEffect(() => {
+    if (selected === null) return;
+    const el = document.getElementById('current-card');
+    if (!el) return;
+    const top = el.getBoundingClientRect().top;
+    if (top >= 0 && top < window.innerHeight) return;
+    el.scrollIntoView({ block: 'start' }); // instant: the card's content changes instantly too
+  }, [selected]);
 
   if (!reviews || !loaded) return <Card>Loading…</Card>;
 
@@ -46,7 +60,7 @@ export default function CardsPage() {
     );
   }
 
-  const queue = buildQueue(words, reviews, now);
+  const queue = withSelection(buildQueue(words, reviews, now), selected);
   const current = queue.find((i) => i.status === 'now');
   const entry = current && studyList.find((i) => i.word === current.word);
   const nextDue = queue.length ? Math.min(...queue.map((i) => i.dueAt)) : undefined;
@@ -58,6 +72,7 @@ export default function CardsPage() {
     setReviews(new Map(reviews!).set(current.word, updated));
     setNow(at);
     setRevealed(false);
+    setSelected(null);
     try {
       await putReview(updated);
     } catch {
@@ -71,6 +86,7 @@ export default function CardsPage() {
     setReviews(new Map([...reviews!, ...due.map((r): [string, ReviewRecord] => [r.word, r])]));
     setNow(Date.now());
     setRevealed(false);
+    setSelected(null);
     try {
       await Promise.all(due.map(putReview));
     } catch {
@@ -78,76 +94,92 @@ export default function CardsPage() {
     }
   }
 
+  /** Shows the chosen word's card. */
+  function selectWord(word: string) {
+    if (word === current?.word) return;
+    setSelected(word);
+    setRevealed(false);
+  }
+
   return (
     <TwoColumn
       main={
-        <Card>
-          {error && (
-            <p className="placeholder" role="alert">
-              Progress could not be saved in this browser.
-            </p>
-          )}
-          {current && entry ? (
-            <>
-              <p className="word-front" lang="ja">
-                {current.word}
+        <div id="current-card">
+          <Card>
+            {error && (
+              <p className="placeholder" role="alert">
+                Progress could not be saved in this browser.
               </p>
-              {!revealed ? (
-                <button type="button" className="button button--primary" onClick={() => setRevealed(true)}>
-                  Show reading and meaning
+            )}
+            {current && entry ? (
+              <>
+                <p className="word-front" lang="ja">
+                  {current.word}
+                </p>
+                {!revealed ? (
+                  <button type="button" className="button button--primary" onClick={() => setRevealed(true)}>
+                    Show reading and meaning
+                  </button>
+                ) : (
+                  <>
+                    <p className="reading" lang="ja">
+                      {entry.kana}
+                    </p>
+                    <p className="meaning">
+                      {entry.gloss ?? (
+                        <span className="muted">
+                          {entry.lookedUp
+                            ? 'No definition found.'
+                            : dictionaryError
+                              ? 'Definition unavailable: the dictionary could not be loaded.'
+                              : 'Looking up definition…'}
+                        </span>
+                      )}
+                    </p>
+                    <div className="kanji-grid">
+                      {kanjiChars(current.word).map((c) => (
+                        <KanjiDiagram key={c} char={c} />
+                      ))}
+                    </div>
+                    <div className="grade-row" role="group" aria-label="How well did you remember it?">
+                      {GRADES.map(({ grade: g, label }) => (
+                        <button key={g} type="button" className="button" onClick={() => grade(g)}>
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <h2>All caught up</h2>
+                <p className="muted">
+                  No cards are due.
+                  {nextDue ? ` Next review: ${new Date(nextDue).toLocaleString()}.` : ''}
+                </p>
+                <button type="button" className="button button--primary" onClick={resetAll}>
+                  Reset
                 </button>
-              ) : (
-                <>
-                  <p className="reading" lang="ja">
-                    {entry.kana}
-                  </p>
-                  <p className="meaning">
-                    {entry.gloss ?? (
-                      <span className="muted">
-                        {entry.lookedUp
-                          ? 'No definition found.'
-                          : dictionaryError
-                            ? 'Definition unavailable: the dictionary could not be loaded.'
-                            : 'Looking up definition…'}
-                      </span>
-                    )}
-                  </p>
-                  <div className="kanji-grid">
-                    {kanjiChars(current.word).map((c) => (
-                      <KanjiDiagram key={c} char={c} />
-                    ))}
-                  </div>
-                  <div className="grade-row" role="group" aria-label="How well did you remember it?">
-                    {GRADES.map(({ grade: g, label }) => (
-                      <button key={g} type="button" className="button" onClick={() => grade(g)}>
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <h2>All caught up</h2>
-              <p className="muted">
-                No cards are due.
-                {nextDue ? ` Next review: ${new Date(nextDue).toLocaleString()}.` : ''}
-              </p>
-              <button type="button" className="button button--primary" onClick={resetAll}>
-                Reset
-              </button>
-            </>
-          )}
-        </Card>
+              </>
+            )}
+          </Card>
+        </div>
       }
       side={
         <Card title="Queue">
-          <ul className="word-list">
+          <ul className="word-list queue-list">
             {queue.map((item) => (
               <li key={item.word}>
-                <span className="muted">{STATUS_LABEL[item.status]}</span>
-                <span lang="ja">{item.word}</span>
+                <button
+                  type="button"
+                  className="queue-item"
+                  aria-current={item.status === 'now' ? 'true' : undefined}
+                  onClick={() => selectWord(item.word)}
+                >
+                  <span className="muted">{STATUS_LABEL[item.status]}</span>
+                  <span lang="ja">{item.word}</span>
+                </button>
               </li>
             ))}
           </ul>

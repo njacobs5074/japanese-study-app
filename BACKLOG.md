@@ -5,7 +5,7 @@
     - [ ] Share them as images
     - [ ] Share them as data so that they can be imported into another user’s app
 - [ ] On Cards view
-  - [ ] Select specific items from the queue to study
+  - [x] Select specific items from the queue to study
   - [ ] Randomize queue (button)
 
 ## Data safety
