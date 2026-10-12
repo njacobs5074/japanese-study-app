@@ -4,6 +4,9 @@
 - [ ] Study cards sharing
     - [ ] Share them as images
     - [ ] Share them as data so that they can be imported into another user’s app
+- [ ] On Cards view
+  - [ ] Select specific items from the queue to study
+  - [ ] Randomize queue (button)
 
 ## Data safety
 - [ ] Ask the browser for persistent storage so saved data is not evicted (Safari can clear a site's storage after a week of non-use); export (above) is the safety net, so consider doing it first
